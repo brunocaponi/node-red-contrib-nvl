@@ -36,6 +36,8 @@ module.exports = function(RED) {
             let listId = msg.id || node.listId;
             let pack = msg.pack || node.pack; 
             let nvl = {};
+            const resetCounter = msg.resetCounter;
+
             if(typeof msg.nvl === 'string' || msg.nvl instanceof String){
                 //Use dynamic nvl
                 try{
@@ -118,6 +120,10 @@ module.exports = function(RED) {
                 node.mem[listId] = {
                     cntFull: -1, //Last fully received packages counter
                 };
+            }
+
+            if(resetCounter) {
+                node.mem[listId].cntFull = -1;
             }
 
             //Create new counter storage space if needed

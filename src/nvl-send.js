@@ -36,6 +36,8 @@ module.exports = function(RED) {
             let listId = msg.id || node.listId;
             let pack = msg.pack || node.pack;
             let nvl = {};
+            const resetCounter = msg.resetCounter;
+
             if(typeof msg.nvl === 'string' || msg.nvl instanceof String){
                 //Use dynamic nvl
                 try{
@@ -64,6 +66,10 @@ module.exports = function(RED) {
             //Create storage based on listId
             if(!(listId in node.mem)){
                 node.mem[listId] = {counter: 0, data: nvl.getDefault()};
+            }
+
+            if(resetCounter) {
+                node.mem[listId].counter = typeof resetCounter === 'number' ? resetCounter : 0;
             }
 
             try{
